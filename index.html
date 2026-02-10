@@ -28,8 +28,8 @@
         /* 2. TYPOGRAPHY */
         h1 {
             color: #ff4d4d;
-            font-size: clamp(1.5rem, 5vw, 3rem); /* Responsive font size */
-            margin: 20px auto; /* Center horizontally */
+            font-size: clamp(1.5rem, 5vw, 3rem);
+            margin: 10px 0 20px 0; 
             max-width: 90%;
             line-height: 1.2;
             z-index: 5;
@@ -40,8 +40,8 @@
         .gif-container {
             width: 250px;
             height: 250px;
-            /* This is the magic line for perfect centering */
-            margin: 0 auto 20px auto; 
+            /* UPDATED: Reduced bottom margin from 20px to 10px */
+            margin: 0 auto 10px auto; 
             display: flex;
             justify-content: center;
             align-items: center;
@@ -111,11 +111,18 @@
             z-index: 9999;
         }
         
+        /* NEW: Removes extra space below the kissing bear */
+        #success-message .gif-container {
+            margin-bottom: 0; 
+        }
+
+        /* NEW: Forces the "Yeayy" text to sit tight under the bear */
         #success-message h1 {
             font-size: 2.5rem;
             animation: popIn 0.5s ease-out;
             padding: 0 20px;
-            margin: auto; /* Center success text */
+            margin-top: 10px; 
+            margin-bottom: 0;
         }
 
         @keyframes popIn {
@@ -221,7 +228,7 @@
             "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExcThrMzN4ZHo2ZHUyaDA3c3dlNnYzbGNkMGxibmVjeGcwMmJ3dWJkdiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/jLZRtuUCQY3WcgGRak/giphy.gif",
             
             // 13. Cute/Impress (Puss in Boots - Repeat)
-            "https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3M2VweTJ5M2Vvcmg1bnRvOW9haGNpMzBzdmpmd2I0b2JrbjlwbnhkcyZlcD12MV9naWZzX3JlbGF0ZWQmY3Q9Zw/jnQYWZ0T4mkhCmkzcn/giphy.gif",
+            "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExcTFhNXNubng5b2Z2amtmZmhhYjBmeTR3Y25wemk4a24wN3VicXhraiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/vYEL7SEwOcmJ2/giphy.gif",
             
             // 14. Sad (Peach Goma Sad - Repeat)
             "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOGxqOHRtdzZyaGlhbXRtZm4xNWtkcTk1OXk0ajU5a2d5NnhycGNjdyZlcD12MV9naWZzX3NlYXJjaCZjdD1n/VoRnF8sxWuTLO/giphy.gif",
@@ -285,5 +292,6 @@
     </script>
 </body>
 </html>
+
 
 
