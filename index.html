@@ -22,24 +22,26 @@
             text-align: center;
             flex-direction: column;
             overflow: hidden;
+            width: 100%; /* Ensure body takes full width */
         }
 
         /* 2. TYPOGRAPHY */
         h1 {
             color: #ff4d4d;
             font-size: clamp(1.5rem, 5vw, 3rem); /* Responsive font size */
-            margin: 20px 0;
+            margin: 20px auto; /* Center horizontally */
             max-width: 90%;
             line-height: 1.2;
             z-index: 5;
             text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
         }
 
-        /* 3. IMAGE CONTAINER */
+        /* 3. IMAGE CONTAINER - THE FIX IS HERE */
         .gif-container {
             width: 250px;
             height: 250px;
-            margin-bottom: 20px;
+            /* This is the magic line for perfect centering */
+            margin: 0 auto 20px auto; 
             display: flex;
             justify-content: center;
             align-items: center;
@@ -52,6 +54,9 @@
             border-radius: 15px;
             object-fit: contain;
             box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            /* Ensure image itself doesn't shift */
+            display: block; 
+            margin: auto;
         }
 
         /* 4. BUTTONS */
@@ -63,6 +68,8 @@
             flex-wrap: wrap; 
             position: relative;
             z-index: 10;
+            margin: 0 auto; /* Ensure button container is centered */
+            max-width: 100%;
         }
 
         button {
@@ -108,6 +115,7 @@
             font-size: 2.5rem;
             animation: popIn 0.5s ease-out;
             padding: 0 20px;
+            margin: auto; /* Center success text */
         }
 
         @keyframes popIn {
@@ -124,7 +132,7 @@
 
     <div id="preload"></div>
 
-    <div id="question-container">
+    <div id="question-container" style="width: 100%; display: flex; flex-direction: column; align-items: center;">
         <div class="gif-container">
             <img id="mainGif" 
                  src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExZHRmOHJxMnk1ZXZkOWhsOTdxZzVqbjhjNGRwOTY1MDNhdnkzYWsxcCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/wvYNSqBAMDVx8CEYkt/giphy.gif" 
