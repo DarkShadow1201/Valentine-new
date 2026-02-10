@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Majhi Valentine Hoshil Ka?</title>
+    <style>
+        /* 1. RESET & BASIC STYLES */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #ffe6e6; /* Soft pink background */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            text-align: center;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* 2. TYPOGRAPHY */
+        h1 {
+            color: #ff4d4d;
+            font-size: clamp(1.5rem, 5vw, 3rem); /* Responsive font size */
+            margin: 20px 0;
+            max-width: 90%;
+            line-height: 1.2;
+            z-index: 5;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+
+        /* 3. IMAGE CONTAINER */
+        .gif-container {
+            width: 250px;
+            height: 250px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 5;
+        }
+
+        .gif-container img {
+            max-width: 100%;
+            max-height: 100%;
+            border-radius: 15px;
+            object-fit: contain;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        /* 4. BUTTONS */
+        .buttons {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap; 
+            position: relative;
+            z-index: 10;
+        }
+
+        button {
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.1s ease;
+            font-weight: bold;
+            white-space: nowrap; 
+        }
+
+        #yesBtn {
+            background-color: #28a745;
+            color: white;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            z-index: 100; /* Stays on top */
+        }
+
+        #noBtn {
+            background-color: #dc3545;
+            color: white;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        /* 5. SUCCESS STATE */
+        #success-message {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #ffcccc;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+        
+        #success-message h1 {
+            font-size: 2.5rem;
+            animation: popIn 0.5s ease-out;
+            padding: 0 20px;
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0); }
+            80% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        /* Hidden area to preload images */
+        #preload { width: 0; height: 0; overflow: hidden; position: absolute; }
+    </style>
+</head>
+<body>
+
+    <div id="preload"></div>
+
+    <div id="question-container">
+        <div class="gif-container">
+            <img id="mainGif" 
+                 src="https://media.tenor.com/KiWuX4WdE_gAAAAi/mocha-mochi.gif" 
+                 alt="Cute Bear"
+                 onerror="this.src='https://media.tenor.com/Ko2Rf_Xn0W0AAAAi/cute-bear.gif'">
+        </div>
+        
+        <h1 id="mainText">Tu majhi Valentine hoshil ka? 🌹</h1>
+        
+        <div class="buttons">
+            <button id="yesBtn" onclick="acceptLove()">Ho 💖</button>
+            <button id="noBtn" onclick="refuseLove()">Nahi 💔</button>
+        </div>
+    </div>
+
+    <div id="success-message">
+        <div class="gif-container">
+            <img src="https://media.tenor.com/gUiu1zyxfzYAAAAi/bear-kiss-bear-kisses.gif" alt="Happy Bear">
+        </div>
+        <h1>Yeayy!! Mala mahit hota tu 'Ho' mhanshil! 💖</h1>
+    </div>
+
+    <script>
+        // --- CONFIGURATION ---
+        const config = {
+            growthRate: 20, // Pixels to grow per click
+            fallbackImage: "https://media.tenor.com/Ko2Rf_Xn0W0AAAAi/cute-bear.gif"
+        };
+
+        // --- MARATHI PHRASES (16 Items) ---
+        const phrases = [
+            "Nahi 💔",                  // 1
+            "Nakki ka?",                // 2
+            "Kharch?",                  // 3
+            "Parat ekda vichar kar!",   // 4
+            "Ha shevatcha chance ahe!", // 5
+            "Asa nako karu g!",         // 6
+            "Tula pashchatap hoil!",    // 7
+            "Jara manavar ghe na!",     // 8
+            "Evdha bhav nako khau!",    // 9
+            "Thoda tari prem ahe ka?",  // 10
+            "Plz man badal na!",        // 11
+            "Maza hruday tutel...",     // 12
+            "Tu evdhi kathor kashi?",   // 13
+            "Mala radu yetay ata...",   // 14
+            "Tula majhi dayaa yet nahi?", // 15
+            "Ja... me boltach nahi! 😭" // 16
+        ];
+
+        // --- GIF LINKS (Mixed Tenor & Giphy for reliability) ---
+        const imageUrls = [
+            "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExM2Q.../giphy.gif", // 1
+            "https://media.tenor.com/4k7sYk_C7NAAAAAj/bear-sad.gif",      // 2
+            "https://media.giphy.com/media/3o6wrvdHFbwBrUFenu/giphy.gif", // 3
+            "https://media.tenor.com/ivKWdfdbV3EAAAAi/goma-peach.gif",     // 4
+            "https://media.giphy.com/media/OPU6wzx8J92NO/giphy.gif",       // 5
+            "https://media.tenor.com/62tW3QyV-zAAAAAj/cat-crying.gif",     // 6
+            "https://media.giphy.com/media/L95W4wv8nnb9K/giphy.gif",       // 7
+            "https://media.tenor.com/VpL_iFvTjykAAAAj/sad-cat.gif",        // 8
+            "https://media.giphy.com/media/mvRk6rI1k6tfa/giphy.gif",       // 9
+            "https://media.tenor.com/M11YN8K34MQAAAAj/sad-cute.gif",       // 10
+            "https://media.giphy.com/media/d2lcHJPG5BTmmtS/giphy.gif",     // 11
+            "https://media.tenor.com/7gK8e73l5W4AAAAj/sad-anime.gif",      // 12
+            "https://media.giphy.com/media/7SF5scGB2AFrgsXP63/giphy.gif",  // 13
+            "https://media.tenor.com/k6gA2sgVjXkAAAAj/sad-bear.gif",       // 14
+            "https://media.giphy.com/media/l2JhrhAtnJSDNJ2py/giphy.gif",   // 15
+            "https://media.tenor.com/rM1s158lT80AAAAj/sad-cat-crying.gif"  // 16
+        ];
+
+        // --- STATE MANAGEMENT ---
+        let count = 0;
+
+        // --- PRELOADER (Runs immediately) ---
+        (function preloadImages() {
+            const preloadContainer = document.getElementById('preload');
+            imageUrls.forEach((url) => {
+                const img = document.createElement('img');
+                img.src = url;
+                img.onerror = function() { console.log("Skipping broken link: " + url); }; 
+                preloadContainer.appendChild(img);
+            });
+        })();
+
+        // --- FUNCTIONS ---
+        function refuseLove() {
+            const yesBtn = document.getElementById("yesBtn");
+            const noBtn = document.getElementById("noBtn");
+            const mainGif = document.getElementById("mainGif");
+
+            // 1. Increment Count
+            count++;
+
+            // 2. Get safe index
+            const index = Math.min(count, phrases.length - 1);
+
+            // 3. Update Text (Marathi)
+            noBtn.innerText = phrases[index];
+
+            // 4. Update Image
+            mainGif.src = imageUrls[index];
+
+            // 5. Grow Yes Button
+            const style = window.getComputedStyle(yesBtn);
+            const currentSize = parseFloat(style.fontSize);
+            const currentPadding = parseFloat(style.paddingTop);
+
+            yesBtn.style.fontSize = `${currentSize + config.growthRate}px`;
+            yesBtn.style.padding = `${currentPadding + 10}px ${currentPadding * 1.5}px`;
+        }
+
+        function acceptLove() {
+            const success = document.getElementById("success-message");
+            const question = document.getElementById("question-container");
+            
+            question.style.display = "none";
+            success.style.display = "flex";
+            document.body.style.backgroundColor = "#ffcccc";
+        }
+    </script>
+</body>
+</html>
